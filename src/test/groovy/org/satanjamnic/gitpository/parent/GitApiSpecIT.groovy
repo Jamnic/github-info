@@ -2,7 +2,7 @@ package org.satanjamnic.gitpository.parent
 
 import spock.lang.Specification
 
-class GitApiSpec extends Specification {
+class GitApiSpecIT extends Specification {
 
     def "should return git repository info for given owner and repository name"(
             String owner,

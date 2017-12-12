@@ -1,9 +1,11 @@
 package org.satanjamnic.gitpository.parent
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.satanjamnic.gitpository.parent.connection.GetConnectionExecutor
+import org.satanjamnic.gitpository.parent.connection.factory.GetConnectionFactory
 
 // TODO consider changing name
-class GitApi {
+class GitApi (){
 
     fun getRepositoryInfo(
             owner: String,
@@ -11,13 +13,13 @@ class GitApi {
     ): GitApiResponse {
 
         // TODO DependencyInjection
-        val connectionFactory = ConnectionFactory("https://api.github.com/repos/$owner/$repo", 5000)
+        val connectionFactory = GetConnectionFactory("https://api.github.com/repos/$owner/$repo", 5000)
 
         // TODO DependencyInjection
-        val data = GetConnection(connectionFactory).json()
+        val data = GetConnectionExecutor(connectionFactory).response()
 
-        // TODO delegate to json class + DependencyInjection
-        val json = ObjectMapper().readTree(data)
+        // TODO delegate to response class + DependencyInjection
+        val json = ObjectMapper().readTree(data.data())
 
         return GitApiResponse(
                 json["full_name"].asText(),

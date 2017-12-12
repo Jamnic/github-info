@@ -1,13 +1,14 @@
-package org.satanjamnic.gitpository.parent
+package org.satanjamnic.gitpository.parent.connection.factory
 
+import org.satanjamnic.gitpository.parent.connection.BaseConnection
+import org.satanjamnic.gitpository.parent.connection.Connection
 import java.net.HttpURLConnection
 import java.net.URL
 
-// TODO try to generify that
-class ConnectionFactory(
+class GetConnectionFactory(
         private val url: URL,
         private val timeout: Int
-) {
+) : ConnectionFactory {
 
     constructor(
             urlString: String,
@@ -16,7 +17,7 @@ class ConnectionFactory(
             URL(urlString),
             timeout)
 
-    fun create(): HttpURLConnection {
+    override fun create(): Connection {
         val connection = url.openConnection() as HttpURLConnection
         connection.requestMethod = "GET"
         connection.setRequestProperty("Content-length", "0")
@@ -24,6 +25,6 @@ class ConnectionFactory(
         connection.allowUserInteraction = false
         connection.connectTimeout = timeout
         connection.readTimeout = timeout
-        return connection
+        return BaseConnection(connection)
     }
 }
